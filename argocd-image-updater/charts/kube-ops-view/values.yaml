@@ -4,7 +4,7 @@ pullsecret: registry-tanmaybhat
 image:
   repository: rieicp/simple-app
   tag: latest
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 service:
   # annotations:
   #   service.beta.kubernetes.io/aws-load-balancer-internal: "0.0.0.0/0"

@@ -44,7 +44,6 @@ spec:
       securityContext:
 {{ toYaml . | indent 8 }}
       {{- end }}
-      serviceAccountName: {{ if .Values.rbac.create }}{{ template "kube-ops-view.fullname" . }}{{ else }}"{{ .Values.rbac.serviceAccountName }}"{{ end }}
       imagePullSecrets:
       - name: {{ .Values.pullsecret }}
       containers:
@@ -64,14 +63,13 @@ spec:
         securityContext: {{ toYaml . | nindent 10 }}
         {{- end }}
         ports:
-        - containerPort: {{ .Values.service.internalPort }}
+          - containerPort: 8088
         livenessProbe:
           httpGet:
-            path: /health
-            port: {{ .Values.service.internalPort }}
+            path: /hello
+            port: 8088
         readinessProbe:
           httpGet:
-            path: /health
-            port: {{ .Values.service.internalPort }}
-        resources:
-{{ toYaml .Values.resources | indent 12 }}
+            path: /hello
+            port: 8088
+

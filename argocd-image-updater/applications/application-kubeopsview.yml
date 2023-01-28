@@ -15,7 +15,7 @@ spec:
     namespace: kube-ops-view
   project: default
   source:
-    repoURL: 'https://gitlab.com/Tanmay-Bhat/argocd.git'
+    repoURL: 'https://github.com/rieicp/argocd--of--tanmay-bhat.git'
     path: argocd-image-updater/charts/kube-ops-view
     targetRevision: HEAD
     helm:

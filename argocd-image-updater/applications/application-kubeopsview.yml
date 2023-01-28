@@ -8,7 +8,6 @@ metadata:
   annotations:
     argocd-image-updater.argoproj.io/image-list: rieicp/simple-app:latest
     argocd-image-updater.argoproj.io/update-strategy: digest
-    argocd-image-updater.argoproj.io/git-branch: main
 spec:
   destination:
     server: https://kubernetes.default.svc

@@ -1,0 +1,12 @@
+dependencies:
+- name: unichart
+  repository: https://shabahang.github.io/unichart/
+  version: 0.1.6
+- name: unichart
+  repository: https://shabahang.github.io/unichart/
+  version: 0.1.6
+- name: unichart
+  repository: https://shabahang.github.io/unichart/
+  version: 0.1.13
+digest: sha256:aae96e823d4d984bcfd68ac503274f497a9fd8d39ede3ade40144b28e151535c
+generated: "2023-07-04T17:21:46.3522971+02:00"

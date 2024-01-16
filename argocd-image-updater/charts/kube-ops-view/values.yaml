@@ -1,64 +1,98 @@
-# Declare variables to be passed into your templates.
-replicaCount: 1
-pullsecret: registry-tanmaybhat
-image:
-  repository: ghcr.io/rieicp/simple-app
-  tag: latest
-  pullPolicy: IfNotPresent
-service:
-  # annotations:
-  #   service.beta.kubernetes.io/aws-load-balancer-internal: "0.0.0.0/0"
-  # labels:
-  #   key: value
-  type: ClusterIP
-  externalPort: 80
-  internalPort: 8080
-resources:
-  limits:
-    cpu: 100m
-    memory: 128Mi
-  requests:
-    cpu: 80m
-    memory: 64Mi
-ingress:
-  enabled: false
-  path: /
-  hostname: kube-ops-view.local
-  annotations: {}
-  #   kubernetes.io/ingress.class: nginx
-  tls: []
-  ## Secrets must be manually created in the namespace
-  #   - secretName: kube-ops-view.local-tls
-  #     hosts:
-  #       - kube-ops-view.local
-rbac:
-  # If true, create & use RBAC resources
-  create: true
-  # Ignored if rbac.create is true
-  serviceAccountName: default
 
-## Additional pod labels
-## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
-podLabels: {}
-affinity: {}
-nodeSelector: {}
-tolerations: []
+unichart-cleo-sf-rest:
+  enabled: true
+  image:
+    repository: "ghcr.io/rieicp/simple-app"
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  envs:
+    - {var_name: SF_SERVER_ENDPOINT, var_value: 'https://mona.cleo.plusnet.de/remote/plusnet--xdev.sandbox.my.salesforce.com'}
+    - {var_name: APP_PROFILE, var_value: 'default'}
+    - {var_name: KAFKA_BROKER, var_value: 'kafka.svccleo.plusk.plusnet.de:31090'}
+    - {var_name: SCHEMA_REGITRY_URL, var_value: 'http://kafka-schema.soacleo.plusk.plusnet.de'}
+    - {var_name: TRUST_STORE, var_value: '/usr/app/cacerts.jks'}
+    - {var_name: ADDITIONAL_ARGUMENTS, var_value: ''}
+  secrets:
+    - {sec_name: SF_USER, sec_value: 'api02@plusnet.de.xdev'}
+    - {sec_name: SF_PSSWD, sec_value: 'Im-1R8mBAll'}
+    - {sec_name: SF_TOKEN, sec_value: 'yeyzP5W41KQHEQQJquHw5zR5C'}
+    - {sec_name: KAFKA_PRODUCTION_API_KEY, sec_value: ''}
+    - {sec_name: KAFKA_PRODUCTION_API_SECRET, sec_value: ''}
+    - {sec_name: SCHEMA_REGITRY_PRODUCTION_AUTH_KEY, sec_value: ''}
+    - {sec_name: SCHEMA_REGITRY_PRODUCTION_AUTH_SECRET, sec_value: ''}
+  mounts:
+    emptyDir:
+      - {mount_path: /var/run/java, vol_name: java-socket}
 
-# pass env vars like this: helm [...] --set env.ENV_NAME=env_value,env.ENV_NAME2=env_value2
-env: {}
+#  imagePullSecrets:
+#    - name: "ghcr-io-credentials"
+  nameOverride: ""
+  fullnameOverride: ""
 
-# Add securityContext
-securityContext: {}
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: false
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
 
-# Add securityContext at pod level:
-podSecurityContext: {}
+  podAnnotations: {}
 
-# Defaults for Redis
-redis:
-  enabled: false
-  usePassword: false
-  cluster:
+  podSecurityContext: {}
+  # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+  # runAsUser: 1000
+
+  service:
+    type: ClusterIP
+    port: 80
+
+  ingress:
     enabled: false
-  master:
-    persistence:
-      enabled: false
+    className: ""
+    annotations: {}
+      # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+    hosts:
+      - host: chart-example.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+  #   memory: 128Mi
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}

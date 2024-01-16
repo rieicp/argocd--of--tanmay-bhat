@@ -3,7 +3,7 @@ unichart-cleo-sf-rest:
   enabled: true
   image:
     repository: "ghcr.io/rieicp/simple-app"
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     # Overrides the image tag whose default is the chart appVersion.
     tag: "latest"
   envs:

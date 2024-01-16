@@ -2,7 +2,7 @@
 replicaCount: 1
 pullsecret: registry-tanmaybhat
 image:
-  repository: rieicp/simple-app
+  repository: ghcr.io/rieicp/simple-app
   tag: latest
   pullPolicy: IfNotPresent
 service:

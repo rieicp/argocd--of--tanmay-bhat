@@ -6,7 +6,7 @@ metadata:
   - resources-finalizer.argocd.argoproj.io
   namespace: argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: rieicp/simple-app:latest
+    argocd-image-updater.argoproj.io/image-list: ghcr.io/rieicp/simple-app:latest
     argocd-image-updater.argoproj.io/update-strategy: digest
 spec:
   destination:
